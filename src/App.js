@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ToDoForm from "./ToDoForm";
+import ToDoList from "./ToDoList";
 
-class App extends Component {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toDos: []
+    };
+  }
+
+  formChange = toDo => {
+    this.setState({ toDos: [...this.state.toDos, toDo] });
+  };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <h1>{this.state.toDos}</h1>
+        <ToDoForm formChange={this.formChange} />
+        <ToDoList toDos={this.state.toDos} />
       </div>
     );
   }
