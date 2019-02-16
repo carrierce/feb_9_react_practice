@@ -7,28 +7,39 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 0,
-      toDos: []
+      toDos: [],
+      data: []
     };
   }
 
-  formChange = toDo => {
-    this.setState({ toDos: [...this.state.toDos, toDo] });
-    let currentIds = this.state.data.map(data => data.id);
-    let idToBeAdded = 0;
-    while (currentIds.includes(idToBeAdded)) {
-      ++idToBeAdded;
-    }
-    // What the while statement does is look at current is loop through all the data in the state
-    // and check the data's id and if the id equals the current value of idToBeAdded, the value of
-    // idToBeAdded increases by 1. This ensures that we have unique id that is one larger than all existing ideas.
-    axios.post("http://localhost:3001/api/putData", {
-      id: idToBeAdded,
-      toDo: toDo
-    });
+  componentDidMount() {
+    this.getDataFromDb();
+    // if (!this.state.intervalIsSet) {
+    //   let interval = setInterval(this.getDataFromDb, 1000);
+    //   this.setState({ intervalIsSet: interval });
+    // }
+    // this.setState({ toDos: [...this.state.toDos, this.state.data.toDo] });
+    console.log(this.state.data);
+  }
+
+  getDataFromDb = () => {
+    fetch("http://localhost:3001/api/getData")
+      .then(data => data.json())
+      .then(res => this.setState({ data: res.data }));
   };
 
-  // so I need to figure how to push the id in with the toDo. That needs to be done with setState
+  // I think here we need to so something about a set state of the data from the DB into the toDos: using
+  // something like toDos: [...this.state.toDos, toDo]. Make sure the formatting is correct.
+
+  formChange = toDo => {
+    this.setState({ toDos: [...this.state.toDos, toDo] });
+
+    axios.post("http://localhost:3001/api/putData", {
+      toDo: toDo
+    });
+    console.log(this.state.data);
+    console.log(this.state.toDos);
+  };
 
   render() {
     return (

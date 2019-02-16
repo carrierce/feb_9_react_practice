@@ -33,10 +33,10 @@ router;
 // this is our get method
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
-  // Data.find((err, data) => {
-  //   if (err) return res.json({ success: false, error: err });
-  //   return res.json({ success: true, data  : data });
-  // });
+  Data.find((err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
 });
 
 // this is our update method
@@ -65,16 +65,15 @@ router.delete("/deleteData", (req, res) => {
 router.post("/putData", (req, res) => {
   let data = new Data();
 
-  const { id, toDo } = req.body;
+  const { toDo } = req.body;
 
-  if (!id && id !== 0) {
-    return res.json({
-      success: false,
-      error: "INVALID INPUTS"
-    });
-  }
+  // if (!id && id !== 0) {
+  //   return res.json({
+  //     success: false,
+  //     error: "INVALID INPUTS"
+  //   });
+  // }
   data.toDo = toDo;
-  data.id = id;
   data.save(err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
